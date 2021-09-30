@@ -1,0 +1,22 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+psycopg2-binary = "*"
+sqlalchemy = "*"
+
+[dev-packages]
+mypy = "*"
+pytest = "*"
+sqlalchemy-stubs = "*"
+flake8 = "*"
+isort = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+smart_library="python ./smart_library/src/main.py"

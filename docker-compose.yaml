@@ -1,0 +1,58 @@
+version: '2'
+
+networks:
+    scentmate_net:
+        driver: bridge
+
+services:
+    cms_database:
+        container_name: cms_database
+        image: postgres:latest 
+        ports:
+            - '15432:5432'
+        volumes:
+            - ./database_config/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+            - ./database_config/data.sql:/docker-entrypoint-initdb.d/2-fragrances.sql
+        networks:
+            - scentmate_net
+        environment:
+            POSTGRES_USER: cms_user
+            POSTGRES_PASSWORD: cms_user_password
+            POSTGRES_DB: cms_database
+
+    fragrances_database:
+        container_name: fragrance_database
+        image: postgres:latest 
+        ports:
+            - '25432:5432'
+        volumes:
+            - ./database_config/schema.sql:/docker-entrypoint-initdb.d/1-schema.sql
+            - ./database_config/data.sql:/docker-entrypoint-initdb.d/2-fragrances.sql
+        networks:
+            - scentmate_net
+        environment:
+            POSTGRES_USER: scentmate_user
+            POSTGRES_PASSWORD: scentmate_password
+            POSTGRES_DB: fragrancedb
+
+    cms_simulator:
+        container_name: cms_simulator
+        build: ./cms_simulator 
+        ports:
+            - '9090:9090'
+        networks:
+            - scentmate_net
+        depends_on: 
+            - cms_database
+            - fragrances_database
+
+    smart_library:
+        container_name: smart_library_simulator
+        build: ./smart_library_simulator 
+        ports:
+            - '9099:9099'
+        networks:
+            - scentmate_net
+        depends_on: 
+            - cms_database
+            - fragrances_database

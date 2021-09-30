@@ -1,0 +1,21 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+fastapi-utils = "*"
+uvicorn = "*"
+sqlalchemy = "*"
+psycopg2-binary = "*"
+requests = "*"
+
+[dev-packages]
+ipython = "*"
+
+[requires]
+python_version = "3.8"
+
+[scripts]
+cms="python ./cms/src/main.py"
